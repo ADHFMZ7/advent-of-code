@@ -6,8 +6,7 @@ def extract_input(filename):
 
 def find_marker(line, bufsize):
   for i in range(bufsize, len(line)):
-    buff = line[i-bufsize: i]
-    if len(set(buff)) >= bufsize:
+    if len(set(line[i-bufsize: i])) >= bufsize:
       return i
 
 
