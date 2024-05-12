@@ -5,7 +5,7 @@
 
 #define FILENAME "input.txt"
 
-int calculate_slope(int drow, int dcol, std::vector<std::string>& vc) {
+long calculate_slope(int drow, int dcol, std::vector<std::string>& vc) {
 
 
   int res = 0;
@@ -41,16 +41,14 @@ int part_one(std::vector<std::string>& vc) {
   return calculate_slope(1, 3, vc);
 }
 
-unsigned long long part_two(std::vector<std::string> vc) {
+long part_two(std::vector<std::string>& vc) {
 
-  unsigned long long res = 1;
-
-  res *= calculate_slope(1, 1, vc);
-  res *= calculate_slope(1, 3, vc);
-  res *= calculate_slope(1, 5, vc);
-  res *= calculate_slope(1, 7, vc);
-  res *= calculate_slope(2, 1, vc);
-  return res;
+  return 
+  calculate_slope(1, 1, vc) * 
+  calculate_slope(1, 3, vc) *
+  calculate_slope(1, 5, vc) *
+  calculate_slope(1, 7, vc) *
+  calculate_slope(2, 1, vc);
 
 }
 
