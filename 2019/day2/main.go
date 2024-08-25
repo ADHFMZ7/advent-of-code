@@ -33,27 +33,36 @@ func main() {
 }
 
 type VM struct {
-	PC int
+	pc int
+	saved_mem []int
 	mem []int
 }
 
-func vm_init (mem []int) {
+func vm_init (mem []int ) *VM {
 
-	
+	new_vm := VM{saved_mem: mem}
+	new_vm.mem = mem
+	new_vm.pc = 0
 
+	return &new_vm
+}
 
-	pc := 0
+func (vm VM) restart () {
+
+	vm.mem = vm.saved_mem
 
 }
 
-func (VM vm) run (noun, verb int) {
+func (vm VM) run (noun, verb int) int {
+
+	vm.restart()
 
 	vm.mem[1] = noun 
 	vm.mem[2] = verb
 
 	for vm.pc + 4 < len(vm.mem) {
 		
-		switch mem[pc] {
+		switch vm.mem[vm.pc] {
 			case 1:
 				vm.mem[vm.mem[vm.pc + 3]] = vm.mem[vm.mem[vm.pc+1]] + vm.mem[vm.mem[vm.pc+2]]
 			case 2:
@@ -70,21 +79,15 @@ func (VM vm) run (noun, verb int) {
 
 func part1(mem []int) int {
 
-	vm := 
+	vm := vm_init(mem)
 
-	mem[1] = 12
-	mem[2] = 2
+	return vm.run(12, 2)
 
 }
 
 func part2(mem []int) {
 
 	
-	
-
-
-
-
 }
 
 func parseInput(line string) []int {
