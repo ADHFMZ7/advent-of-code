@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	// Read the input file
 	file, err := os.Open("input")
 	if err != nil {
 		panic(err)
@@ -27,9 +26,8 @@ func main() {
 		panic(err)
 	}
 
-	// Process the input
 	fmt.Printf("Part 1: %d\n", part1(input))
-	part2(input)
+	fmt.Printf("Part 2: %d\n", part2(input))
 }
 
 type VM struct {
@@ -41,21 +39,20 @@ type VM struct {
 func vm_init (mem []int ) *VM {
 
 	new_vm := VM{saved_mem: mem}
-	new_vm.mem = mem
-	new_vm.pc = 0
+	new_vm.restart()
 
 	return &new_vm
 }
 
-func (vm VM) restart () {
+func (vm *VM) restart () {
 
-	vm.mem = vm.saved_mem
+	vm.mem = make([]int, len(vm.saved_mem))
+	copy(vm.mem, vm.saved_mem)
+	vm.pc = 0
 
 }
 
-func (vm VM) run (noun, verb int) int {
-
-	vm.restart()
+func (vm *VM) run (noun, verb int) int {
 
 	vm.mem[1] = noun 
 	vm.mem[2] = verb
@@ -85,9 +82,20 @@ func part1(mem []int) int {
 
 }
 
-func part2(mem []int) {
+func part2(mem []int) int {
 
-	
+	vm := vm_init(mem)
+
+	for ix := 0; ix < 100; ix ++ {
+		for iy := 0; iy < 100; iy ++ {
+
+			if vm.run(ix, iy) == 19690720 {
+				return 100 * ix + iy
+			}
+			vm.restart()
+		}
+	}
+	return -1
 }
 
 func parseInput(line string) []int {
