@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-
 	f, err := os.Open("input")
 	if err != nil {
 	panic(err)
@@ -106,7 +105,7 @@ func part1(wire1, wire2 []string) int {
 	}
 
 
-	min_distance := 10000
+	min_distance := 100000
 
 	for value, _ := range s_inter {
 		norm := abs(value.x) + abs(value.y)
@@ -117,13 +116,93 @@ func part1(wire1, wire2 []string) int {
 
 	}
 
-	fmt.Println(min_distance)
-
-	return 0
+	return min_distance
 }
 
 func part2(wire1, wire2 []string) int {
-	// fmt.Println(wire[0])
+
+	s1 := make(map[vec2]int)
+
+	w1 := vec2{0, 0}
+	cumsum := 0
+
+	for _, str := range wire1 {
+			
+		direction := str[0]
+		magnitude, _ := strconv.Atoi(str[1:])
+
+
+		var dx vec2
+
+		if direction == 'R' {
+			dx = vec2{1, 0}	
+		} else if direction == 'L' {
+			dx = vec2{-1, 0}	
+		} else if direction == 'U' {
+			dx = vec2{0, 1}	
+		} else if direction == 'D' {
+			dx = vec2{0, -1}	
+		}
+
+		for ix := 0; ix < magnitude; ix++ {
+			w1.x += dx.x
+			w1.y += dx.y
+			cumsum += 1
+			s1[w1] = cumsum 
+		}
+	}
+
+	w2 := vec2{0, 0}
+	cumsum = 0
+
+	s2 := make(map[vec2]int)
+	for _, str := range wire2 {
+		
+		direction := str[0]
+		magnitude, _ := strconv.Atoi(str[1:])
+
+		var dx vec2
+
+		if direction == 'R' {
+			dx = vec2{1, 0}	
+		} else if direction == 'L' {
+			dx = vec2{-1, 0}	
+		} else if direction == 'U' {
+			dx = vec2{0, 1}	
+		} else if direction == 'D' {
+			dx = vec2{0, -1}	
+		}
+
+		for ix := 0; ix < magnitude; ix++ {
+			w2.x += dx.x
+			w2.y += dx.y
+			cumsum += 1
+			s2[w2] = cumsum
+		}
+
+	}
+
+	s_inter := make(map[vec2]int)
+
+	for key, _ := range s1 {
+		if s2[key] > 0{
+			s_inter[key] = s1[key] + s2[key]
+		}
+	}
+
+	min_distance := 1000000
+
+	for _, dist := range s_inter {
+
+		if dist < min_distance {
+			min_distance = dist 
+		}
+
+	}
+
+	return min_distance
+
+	
 	return 0
 }
 
