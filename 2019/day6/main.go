@@ -27,8 +27,34 @@ type Orbit struct {
 }
 
 func part1(orbits map[string]Orbit) int {
-	fmt.Println(orbits)
-	return 0
+
+
+	var dfs func(name string) int
+
+	dfs = func (name string) int {
+
+		orbit, ok := orbits[name]
+
+		if !ok {
+			return 0
+		}
+
+		child_sum := 0
+
+		for _, child := range orbit.children {
+			child_sum += dfs(child)
+			child_sum += 1
+		}
+		return child_sum 
+		
+	}
+
+	ret := 0
+
+	for parent, _ := range orbits {
+		ret += dfs(parent)	
+	}
+	return ret
 }
 
 func part2(orbits map[string]Orbit) int {
