@@ -144,8 +144,6 @@ func (vm *VM) run (noun, verb int) int {
 		}
 		vm.pc += (num_params + 1)
 	}
-
-	return vm.mem[0]
 }
 
 
